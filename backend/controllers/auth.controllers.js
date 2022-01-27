@@ -1,18 +1,19 @@
 const pool = require("../config/db");
 const queries = require("../config/queries");
-const jwt = require("jsonwebtoken");
-const maxAge = 3 * 24 * 60 * 60 * 1000;
-const createToken = (id) => {
-  return (
-    jwt.sign(id),
-    process.env.TOKEN_SECRET,
-    {
-      expiresIn: maxAge,
-    }
-  );
-};
 
-const signUp = (req, res) => {
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const jwtTokens = require("../utils/jwt.helpers");
+//const maxAge = 3 * 24 * 60 * 60 * 1000;
+
+// const createToken = (id) => {
+//   return jwt.sign({ id }, process.env.TOKEN_SECRET, {
+//     expiresIn: maxAge,
+//   });
+// };
+
+const signUp = async (req, res) => {
+  let hashedPassword = await bcrypt.hash(req.body.password, 10);
   //check if email exists
   const email = req.body.email;
   console.log(email);
@@ -21,29 +22,49 @@ const signUp = (req, res) => {
       res.send("Email already registered");
     }
     //add User to db
-    const { first_name, last_name, email, dob, password } = req.body;
+    const { first_name, last_name, email, dob } = req.body;
+
+    //Validation checks
+    if (!first_name || !last_name || !email || !dob || !hashedPassword) {
+      res.status(251).json({ error: "Please fill in all the fields" });
+    }
+
     pool.query(
       queries.addUser,
-      [first_name, last_name, email, dob, password],
+      [first_name, last_name, email, dob, hashedPassword],
       (error, results) => {
         if (error) throw error;
         res.status(201).send("User created succesfully");
         console.log("User created");
+        console.log(hashedPassword);
       }
     );
   });
 };
 
-const signIn = (req, res) => {
-  const { email, password } = req.body;
-
+const signIn = async (req, res) => {
   try {
-    const user = pool.login(email, password);
-    const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge });
-    res.status(200).json({ user: user._id });
+    const { email, password } = req.body;
+    const user = await pool.query(queries.getUserByEmail, [email]);
+    //JWT
+    // const token = createToken(user._id);
+    // console.log(user);
+    // res.cookie("jwt", token, { httpOnly: true, maxAge });
+    // res.status(200).json({ user: user._id });
+
+    if (user.rows.length === 0)
+      return res.status(401).json({ error: "Email is incorrect" });
+    //PASSWORD CHECK
+    const validPassword = await bcrypt.compare(password, user.rows[0].password);
+
+    if (!validPassword)
+      return res.status(401).json({ error: "incorrect password" });
+    //JWT
+    let tokens = jwtTokens(user.rows[0]);
+    res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+    res.json(tokens);
   } catch (error) {
-    res.status(251).json(error);
+    res.status(401).json({ error: error.message });
   }
 };
 
