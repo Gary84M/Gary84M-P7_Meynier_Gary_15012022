@@ -40,7 +40,7 @@ const userInfo = (req, res) => {
 };
 // const addUser = (req, res) => {
 //   const { first_name, last_name, email, dob, password } = req.body;
-//   let firt_name = req.body.first_name;
+//   let first_name = req.body.first_name;
 //   //check if email exists
 //   pool.query(queries.checkEmailExists, [email], (error, results) => {
 //     if (results.rows.length) {
@@ -88,7 +88,7 @@ const updateUser = (req, res) => {
       [first_name, last_name, dob, id],
       (error, results) => {
         if (error) throw error;
-        res.status(200).send("User updated succesfully");
+        res.status(201).send("User updated succesfully");
       }
     );
   });

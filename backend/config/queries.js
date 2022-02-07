@@ -1,3 +1,4 @@
+//*************************USERS******************** */
 const getUsers = "SELECT (id, first_name, last_name, email, dob) FROM users;";
 const getUserById =
   "SELECT (id, first_name, last_name, email, dob) FROM users WHERE id = $1";
@@ -9,6 +10,23 @@ const updateUser =
   "UPDATE users SET first_name = $1, last_name = $2, dob = $3 WHERE id = $4";
 const deleteUser = "DELETE FROM users WHERE id = $1";
 
+//************************POST**************************** */
+const getAllPost = "SELECT * FROM posts ORDER BY id desc";
+const createPost = "INSERT INTO posts (users_id, content) VALUES ($1, $2);";
+const getPostById = "SELECT (id, users_id, content) FROM posts WHERE id = $1;";
+const updatePost = "UPDATE posts SET content = $1 WHERE id = $2;";
+const deletePost = "DELETE FROM posts WHERE id = $1;";
+//**********************COMMENTS************************ */
+const addComm =
+  "INSERT INTO comments (post_id, users_id, content) VALUES ($1, $2, $3);";
+
+const getCommById =
+  "SELECT (id, users_id, content) FROM comments WHERE id = $1;";
+const updateComm = "UPDATE comments SET content = $1 WHERE id = $2;";
+const deleteComm = "DELETE FROM comments WHERE id = $1;";
+const getAllComms =
+  "SELECT * FROM comments WHERE post_id = $1 ORDER BY id desc";
+
 module.exports = {
   getUsers,
   getUserById,
@@ -17,4 +35,16 @@ module.exports = {
   addUser,
   updateUser,
   deleteUser,
+
+  getAllPost,
+  createPost,
+  getPostById,
+  updatePost,
+  deletePost,
+
+  addComm,
+  getCommById,
+  updateComm,
+  deleteComm,
+  getAllComms,
 };

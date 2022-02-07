@@ -3,6 +3,9 @@ const router = Router();
 const authController = require("../controllers/auth.controllers");
 const userController = require("../controllers/user.controller");
 const authenticateToken = require("../middleware/authorization");
+const uploadController = require("../controllers/upload.controller");
+const multer = require("multer");
+const upload = multer();
 
 //auth
 router.post("/register", authController.signUp);
@@ -17,5 +20,8 @@ router.get("/:id", userController.getUserById);
 //router.post("/", userController.addUser);
 router.put("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
+
+//Upload
+router.post("/upload", upload.single("file"), uploadController.uploadProfile);
 
 module.exports = router;

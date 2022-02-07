@@ -47,11 +47,6 @@ const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await pool.query(queries.getUserByEmail, [email]);
-    //JWT
-    // const token = createToken(user._id);
-    // console.log(user);
-    // res.cookie("jwt", token, { httpOnly: true, maxAge });
-    // res.status(200).json({ user: user._id });
 
     if (user.rows.length === 0)
       return res.status(401).json({ error: "Email is incorrect" });
