@@ -1,14 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const multer = require("multer");
 
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
 
 const usersRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
+const cors = require("cors");
 
 const app = express();
+
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  allowHeaders: ["sessionId", "Content-Type"],
+  exposeHeaders: ["sessionId"],
+  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+  preflightContinue: false,
+};
+
+app.use(cors({ corsOptions }));
 
 app.use(cookieParser());
 // app.get("/", function (req, res) {
