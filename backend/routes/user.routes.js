@@ -18,9 +18,14 @@ router.delete("/refresh_token", authController.logout);
 router.get("/", authenticateToken, userController.getUsers);
 router.get("/:id", userController.getUserById);
 router.put("/:id", userController.updateUser);
-router.delete("/:id", userController.deleteUser);
+router.delete("/", userController.deleteUser);
 
 //Upload
-router.post("/upload", multer, uploadController.uploadProfile);
+router.post(
+  "/upload",
+  authenticateToken,
+  multer,
+  uploadController.uploadProfile
+);
 
 module.exports = router;

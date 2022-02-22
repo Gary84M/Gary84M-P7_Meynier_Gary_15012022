@@ -13,6 +13,7 @@ function authenticateToken(req, res, next) {
         error: error.message,
       });
     req.user = user;
+
     next();
   });
 }

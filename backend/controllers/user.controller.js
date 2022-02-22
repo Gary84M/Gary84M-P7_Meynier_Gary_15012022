@@ -75,7 +75,7 @@ const deleteUser = (req, res) => {
 };
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id);
-  const { first_name, last_name, dob } = req.body;
+  const { first_name, last_name, dob, image } = req.body;
   console.log(req.body);
 
   pool.query(queries.getUserById, [id], (error, results) => {
@@ -85,7 +85,7 @@ const updateUser = (req, res) => {
     }
     pool.query(
       queries.updateUser,
-      [first_name, last_name, dob, id],
+      [first_name, last_name, dob, image, id],
       (error, results) => {
         if (error) throw error;
         res.status(201).send("User updated succesfully");

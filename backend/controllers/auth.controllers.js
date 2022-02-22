@@ -56,6 +56,7 @@ const signIn = async (req, res) => {
     if (!validPassword)
       return res.status(401).json({ error: "incorrect password" });
     //JWT
+
     let tokens = jwtTokens(user.rows[0]);
     res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
     res.json(tokens);
@@ -74,6 +75,7 @@ const refreshTok = (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       (error, user) => {
         if (error) return res.status(403).json({ error: error.message });
+        console.log(user);
         let tokens = jwtTokens(user);
         res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
         res.json(tokens);

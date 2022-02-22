@@ -7,12 +7,14 @@ const checkEmailExists = "SELECT s FROM users s WHERE s.email = $1";
 const addUser =
   "INSERT INTO users (first_name, last_name, email, dob, password) VALUES ($1, $2, $3, $4, $5) RETURNING *";
 const updateUser =
-  "UPDATE users SET first_name = $1, last_name = $2, dob = $3 WHERE id = $4";
+  "UPDATE users SET first_name = $1, last_name = $2, dob = $3, image = $4 WHERE id = $5";
 const deleteUser = "DELETE FROM users WHERE id = $1";
+const updateImage = "UPDATE users SET image = $1 WHERE id = $2;";
 
 //************************POST**************************** */
 const getAllPost = "SELECT * FROM posts ORDER BY id desc";
-const createPost = "INSERT INTO posts (users_id, content) VALUES ($1, $2);";
+const createPost =
+  "INSERT INTO posts (users_id, content, type) VALUES ($1, $2, $3);";
 const getPostById = "SELECT (id, users_id, content) FROM posts WHERE id = $1;";
 const updatePost = "UPDATE posts SET content = $1 WHERE id = $2;";
 const deletePost = "DELETE FROM posts WHERE id = $1;";
@@ -35,6 +37,7 @@ module.exports = {
   addUser,
   updateUser,
   deleteUser,
+  updateImage,
 
   getAllPost,
   createPost,

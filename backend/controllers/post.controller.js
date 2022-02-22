@@ -1,3 +1,4 @@
+const { text } = require("body-parser");
 const pool = require("../config/db");
 const queries = require("../config/queries");
 
@@ -10,9 +11,11 @@ const readPost = (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { users_id, content } = req.body;
+  const idUrl = parseInt(req.params.id);
+  const { users_id, content, type } = req.body;
+  type == "text";
   try {
-    pool.query(queries.createPost, [users_id, content], (error, results) => {
+    pool.query(queries.createPost, [idUrl, content, type], (error, results) => {
       if (error) throw error;
       res.status(201).send("Post succesfully created");
       console.log(req.body.content);
