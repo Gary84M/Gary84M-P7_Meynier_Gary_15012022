@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtTokens = require("../utils/jwt.helpers");
 const router = require("../routes/user.routes");
+const signUpErrors = require("../utils/errors.utils");
 //const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 // const createToken = (id) => {
@@ -14,33 +15,39 @@ const router = require("../routes/user.routes");
 // };
 
 const signUp = async (req, res) => {
-  let hashedPassword = await bcrypt.hash(req.body.password, 10);
-  //check if email exists
-  const email = req.body.email;
-  console.log(email);
-  pool.query(queries.checkEmailExists, [email], (error, results) => {
-    if (results.rows.length) {
-      res.send("Email already registered");
-    }
-    //add User to db
-    const { first_name, last_name, email, dob } = req.body;
-
-    //Validation checks
-    if (!first_name || !last_name || !email || !dob || !hashedPassword) {
-      res.status(400).json({ error: "Please fill in all the fields" });
-    }
-
-    pool.query(
-      queries.addUser,
-      [first_name, last_name, email, dob, hashedPassword],
-      (error, results) => {
-        if (error) throw error;
-        res.status(201).send("User created succesfully");
-        console.log("User created");
-        console.log(hashedPassword);
+  try {
+    let hashedPassword = await bcrypt.hash(req.body.password, 10);
+    //check if email exists
+    const email = req.body.email;
+    console.log(email);
+    pool.query(queries.checkEmailExists, [email], (error, results) => {
+      if (results.rows.length) {
+        res.status(401).json({ error: "Email already registered" });
+        // res.json.("Email already registered");
       }
-    );
-  });
+      //add User to db
+      const { first_name, last_name, email, dob } = req.body;
+
+      //Validation checks
+      if (!first_name || !last_name || !email || !dob || !hashedPassword) {
+        res.status(400).json({ error: "Please fill in all the fields" });
+      }
+
+      pool.query(
+        queries.addUser,
+        [first_name, last_name, email, dob, hashedPassword],
+        (error, results) => {
+          if (error) throw error;
+
+          res.status(201).send("User created succesfully");
+        }
+      );
+    });
+  } catch (error) {
+    // const errors = signUpErrors(error);
+    // res.status(200).send({ errors });
+    res.status(401).json(error);
+  }
 };
 
 const signIn = async (req, res) => {
@@ -54,14 +61,16 @@ const signIn = async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
 
     if (!validPassword)
-      return res.status(401).json({ error: "incorrect password" });
-    //JWT
+      //return res.status(401).json({ error: "invalid password" });
 
+      return res.status(401).json({ error: "invalid password" });
+
+    //JWT
     let tokens = jwtTokens(user.rows[0]);
     res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
     res.json(tokens);
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    res.status(401).json({ error: "Null token" });
   }
 };
 const refreshTok = (req, res) => {

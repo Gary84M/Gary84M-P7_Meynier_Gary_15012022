@@ -9,6 +9,7 @@ require("./config/db");
 const usersRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 const cors = require("cors");
+const authenticateToken = require("./middleware/authorization");
 
 const app = express();
 
@@ -20,8 +21,13 @@ const corsOptions = {
   methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
   preflightContinue: false,
 };
+const corsConfig = {
+  credentials: true,
+  origin: true,
+};
+app.use(cors(corsConfig));
 
-app.use(cors({ corsOptions }));
+//app.use(cors({ corsOptions }));
 
 app.use(cookieParser());
 // app.get("/", function (req, res) {
@@ -34,6 +40,11 @@ app.use(cookieParser());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//JWT
+app.get("/jwtid", authenticateToken, (req, res) => {
+  res.status(200).send(res.req.user.user_id);
+});
 
 //Routes
 app.use("/api/users", usersRoutes);

@@ -18,7 +18,7 @@ router.delete("/refresh_token", authController.logout);
 router.get("/", authenticateToken, userController.getUsers);
 router.get("/:id", userController.getUserById);
 router.put("/:id", userController.updateUser);
-router.delete("/", userController.deleteUser);
+router.delete("/:id", userController.deleteUser);
 
 //Upload
 router.post(
