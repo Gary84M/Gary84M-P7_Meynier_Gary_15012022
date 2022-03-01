@@ -19,13 +19,13 @@ const Navbar = () => {
             </div>
           </NavLink>
         </div>
-        {uid ? (
+        {uid !== null || uid !== undefined ? (
           <ul>
             <li></li>
             <li className="welcome">
               <NavLink exact to="/profile">
                 logged IN
-                {/* <h5> Bienvenue {userData.first_name}</h5> */}
+                <h5> Bienvenue {userData.first_name}</h5>
               </NavLink>
             </li>
             <Logout />
