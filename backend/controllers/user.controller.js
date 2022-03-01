@@ -7,6 +7,7 @@ const getUsers = (req, res) => {
 
     (error, results) => {
       if (error) throw error;
+      console.log(results.rows);
       res.status(200).json(results.rows);
       console.log("in the DB");
     }
@@ -15,6 +16,7 @@ const getUsers = (req, res) => {
 
 const getUserById = (req, res) => {
   const id = parseInt(req.params.id);
+
   const { first_name, last_name, email, dob, password } = req.body;
   pool.query(queries.getUserById, [id], (error, results) => {
     if (error) throw error;

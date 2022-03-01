@@ -3,6 +3,7 @@ import axios from "axios";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
@@ -15,17 +16,19 @@ const SignInForm = () => {
       withCredentials: true,
       data: { email, password },
     })
-      .then((res) => {
-        if (res.data.error) {
-          emailError.innerHTML = res.error;
-          passwordError.innerHTML = res.error;
-          console.log(res.data);
-        } else {
-          window.location = "/";
-        }
+      .then((data) => {
+        console.log(data);
+
+        // if (res.error) {
+        //   console.log(res.error);
+        //   emailError.innerHTML = res.error;
+        //   passwordError.innerHTML = res.error;
+        //   console.log("ICI");
+
+        window.location = "/";
       })
       .catch((err) => {
-        console.log(err);
+        setError("identifiants incorrects");
       });
   };
 
@@ -51,7 +54,7 @@ const SignInForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <div className="password error"></div>
+      <div className="password error">{error}</div>
       <br />
       <input type="submit" value="Se connecter" />
     </form>
