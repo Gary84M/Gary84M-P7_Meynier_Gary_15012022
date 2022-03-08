@@ -12,13 +12,15 @@ const uploadProfile = (req, res) => {
   const token = authHeader && authHeader.split(" ")[1];
 
   const decodedToken = jwt.decode(token, process.env.ACCESS_TOKEN_SECRET);
-  console.log(decodedToken);
 
   const id = decodedToken.user_id;
-  console.log(id);
 
-  const name = req.body.name + Date.now();
-  //console.log(name);
+  //const name = "./backend/" + req.file.destination + req.file.filename;
+  const name =
+    "/api/users/public/upload/profile" +
+    req.file.destination +
+    req.file.filename;
+  console.log(req.file.destination);
 
   pool.query(queries.updateImage, [name, id], (error, results) => {
     if (error) throw error;
@@ -26,21 +28,28 @@ const uploadProfile = (req, res) => {
 
   return res
     .status(201)
-    .json({ message: "file succesfully uploaded in the DB" });
+    .json({ message: "profile picture succesfully uploaded " });
 };
 
 const uploadImagePost = async (req, res) => {
-  const { users_id, content, type } = req.body;
-  const name = req.body.originalname;
-  console.log(originalname);
+  const authHeader = req.headers["authorization"]; //Bearer TOKEN
+  const token = authHeader && authHeader.split(" ")[1];
+
+  const decodedToken = jwt.decode(token, process.env.ACCESS_TOKEN_SECRET);
+
+  const user_id = decodedToken.user_id;
+
+  const name = req.file.destination + Date.now() + req.file.filename;
+
+  const content = req.body.content;
+
   try {
     pool.query(
-      queries.createPost,
-      [users_id, req.body.file],
+      queries.createPostImage,
+      [user_id, content, name],
       (error, results) => {
         if (error) throw error;
         res.status(201).send("Post succesfully created");
-        console.log(file);
       }
     );
   } catch (error) {

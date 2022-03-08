@@ -35,7 +35,6 @@ const updatePost = (req, res) => {
 
     if (noConvoFound) {
       res.send("Post does not exist in the DB");
-      console.log("post_id checked");
     }
     pool.query(queries.updatePost, [content, idUrl], (error, results) => {
       if (error) throw error;
@@ -130,7 +129,7 @@ const deleteCommentPost = (req, res) => {
 
 const readComms = (req, res) => {
   const idUrl = parseInt(req.params.id);
-  pool.query(queries.getAllComms, [idUrl], (error, results) => {
+  pool.query(queries.getAllComms, (error, results) => {
     if (error) throw error;
     res.status(200).json(results.rows);
     console.log("getting posts");

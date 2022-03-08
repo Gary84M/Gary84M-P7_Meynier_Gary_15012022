@@ -67,7 +67,7 @@ const signIn = async (req, res) => {
 
     //JWT
     let tokens = jwtTokens(user.rows[0]);
-    res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+    res.cookie("refresh_token", tokens.refreshToken, { httpOnly: false });
     res.json(tokens);
   } catch (error) {
     res.status(401).json({ error: "Null token" });

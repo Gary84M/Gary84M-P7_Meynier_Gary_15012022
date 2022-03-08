@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
+const path = require("path");
 
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
@@ -49,6 +50,11 @@ app.get("/jwtid", authenticateToken, (req, res) => {
 //Routes
 app.use("/api/users", usersRoutes);
 app.use("/api/post", postRoutes);
+
+app.use(
+  "/api/users/",
+  express.static(path.join(__dirname, "public/upload/profile"))
+);
 
 //server
 app.listen(process.env.PORT, () => {

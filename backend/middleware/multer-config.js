@@ -11,13 +11,14 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "public/upload/profile");
+    callback(null, "public/upload/profile/");
   },
   //Set up the file names and add a timestamp
   filename: (req, file, callback) => {
-    const name = req.body.name;
+    const name = file.originalname;
+
     const extension = MIME_TYPES[file.mimetype];
-    callback(null, name + Date.now() + extension);
+    callback(null, name);
   },
 });
 module.exports = multer({ storage }).single("file");

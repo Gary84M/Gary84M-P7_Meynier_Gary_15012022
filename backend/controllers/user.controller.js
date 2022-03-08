@@ -20,7 +20,12 @@ const getUserById = (req, res) => {
   const { first_name, last_name, email, dob, password } = req.body;
   pool.query(queries.getUserById, [id], (error, results) => {
     if (error) throw error;
-    res.status(200).json(results.rows);
+    if (results?.rows?.[0]) {
+      //optionnal chaining
+      res.status(200).json(results.rows[0]);
+    } else {
+      res.sendStatus(404);
+    }
   });
 };
 

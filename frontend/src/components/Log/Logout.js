@@ -17,7 +17,7 @@ const Logout = () => {
       .then(() => removeCookie("refresh_token"))
       .catch((error) => console.log(error));
 
-    window.location = "/";
+    window.location = "/profile";
   };
 
   return (

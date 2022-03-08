@@ -5,7 +5,7 @@ import { UidContext } from "./AppContext";
 import Logout from "./Log/Logout";
 
 const Navbar = () => {
-  const userData = useSelector((state) => state.userReducer[0]);
+  const userData = useSelector((state) => state.userReducer);
   const uid = useContext(UidContext);
 
   return (
@@ -23,7 +23,7 @@ const Navbar = () => {
             <li></li>
             <li className="welcome">
               <NavLink exact to="/profile">
-                <h5>Bienvenue {userData && userData.first_name}</h5>
+                <h5>Bienvenue {userData?.first_name}</h5>
               </NavLink>
             </li>
             <Logout />
