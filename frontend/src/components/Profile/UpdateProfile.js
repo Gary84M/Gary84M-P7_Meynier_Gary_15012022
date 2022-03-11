@@ -6,19 +6,16 @@ import userReducer from "../../reducers/user.reducer";
 
 const UpdateProfile = () => {
   const userData = useSelector((state) => state.userReducer);
-  let profilePicture = userData && userData.image;
 
   return (
     <div className="profil-container">
       <LeftNav />
+
       <h1>Profil de {userData.first_name}</h1>
       <div className="update-container">
         <div className="left-part">
           <h3>Photo de profil</h3>
-          <img
-            src="/Users/garymeynier/CODE/OC-P/P7/P7_Meynier_Gary_15012022/backend/public/upload/profile/tof7.jpg"
-            alt="user"
-          />
+          <img src={userData && userData.image} alt="user" />
           <UploadImg />
           {/* <p>{errors.maxSize}</p>
           <p>{errors.format}</p> */}

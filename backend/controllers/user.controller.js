@@ -45,26 +45,7 @@ const userInfo = (req, res) => {
     });
   });
 };
-// const addUser = (req, res) => {
-//   const { first_name, last_name, email, dob, password } = req.body;
-//   let first_name = req.body.first_name;
-//   //check if email exists
-//   pool.query(queries.checkEmailExists, [email], (error, results) => {
-//     if (results.rows.length) {
-//       res.send("Email already registered");
-//     }
-//     //add User to db
-//     pool.query(
-//       queries.addUser,
-//       [first_name, last_name, email, dob, password],
-//       (error, results) => {
-//         if (error) throw error;
-//         res.status(201).send("User created succesfully");
-//         console.log("User created");
-//       }
-//     );
-//   });
-// };
+
 const deleteUser = (req, res) => {
   const id = parseInt(req.params.id);
 

@@ -11,15 +11,18 @@ const readPost = (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const idUrl = parseInt(req.params.id);
-  const { users_id, content, type } = req.body;
-  type == "text";
+  const { users_id, content, image, video } = req.body;
+  console.log("ICI");
+  console.log(req.body);
   try {
-    pool.query(queries.createPost, [idUrl, content, type], (error, results) => {
-      if (error) throw error;
-      res.status(201).send("Post succesfully created");
-      console.log(req.body.content);
-    });
+    pool.query(
+      queries.createPost,
+      [users_id, content, image, video],
+      (error, results) => {
+        if (error) throw error;
+        res.status(201).send("Post succesfully created");
+      }
+    );
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -111,16 +114,16 @@ const editCommentPost = (req, res) => {
 };
 
 const deleteCommentPost = (req, res) => {
-  const idUrl = parseInt(req.params.id);
-  console.log(idUrl);
+  const comment_id = parseInt(req.params.id);
+  console.log(comment_id);
 
-  pool.query(queries.getCommById, [idUrl], (error, results) => {
+  pool.query(queries.getCommById, [comment_id], (error, results) => {
     const noConvoFound = !results.rows.length;
     if (noConvoFound) {
       res.send("Comment does not exist in the DB");
     }
 
-    pool.query(queries.deleteComm, [idUrl], (error, results) => {
+    pool.query(queries.deleteComm, [comment_id], (error, results) => {
       if (error) throw error;
       res.status(200).send("Comment removed succesfully");
     });
@@ -128,12 +131,19 @@ const deleteCommentPost = (req, res) => {
 };
 
 const readComms = (req, res) => {
-  const idUrl = parseInt(req.params.id);
-  pool.query(queries.getAllComms, (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results.rows);
-    console.log("getting posts");
-  });
+  //const cPostId = parseInt(req.params.id);
+
+  pool.query(
+    // "SELECT p.id, count(c.id) AS total_comments FROM comments c, posts p WHERE c.post_id = p.id GROUP BY p.id;",
+    "SELECT p.id, c.* AS total_comments FROM comments c, posts p WHERE c.post_id = p.id;",
+    // [postid],
+    (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results);
+      console.log(res.results);
+      console.log("getting posts sorted by id");
+    }
+  );
 };
 
 module.exports = {

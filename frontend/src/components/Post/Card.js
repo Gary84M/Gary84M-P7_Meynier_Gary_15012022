@@ -3,23 +3,22 @@ import { useSelector } from "react-redux";
 import { isEmpty } from "../Utils";
 import { useDispatch } from "react-redux";
 
-import userReducer from "../../reducers/user.reducer";
 import { updatePost } from "../../actions/post.actions";
 import DeleteCard from "./DeleteCard";
-import commentReducer from "../../reducers/comment.reducer";
+import CardComments from "./CardComments";
 
 const Card = ({ post }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdated, setIsUpdated] = useState(false);
   const [textUpdate, setTextUpdate] = useState(null);
+  const [showComments, setShowComments] = useState(false);
 
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
-  const comment = useSelector((state) => state.commentReducer);
+  //const comment = useSelector((state) => state.commentReducer);
+  //console.log(comment.rows[0].post_id);
 
   const dispatch = useDispatch();
-
-  //console.log(comment);
 
   const updateItem = () => {
     if (textUpdate) {
@@ -28,12 +27,10 @@ const Card = ({ post }) => {
     setIsUpdated(false);
   };
 
-  //console.log(post.users_id);
-  //console.log(userData.id);
-
   useEffect(() => {
     !isEmpty(usersData[0]) && setIsLoading(false);
   }, [usersData]);
+  console.log("Où es-tu??");
 
   return (
     <li className="card-container" key={post.id}>
@@ -106,14 +103,20 @@ const Card = ({ post }) => {
             )}
             <div className="card-footer">
               <div className="comment-icon">
-                <img src="./img/icons/message1.svg" alt="comment" />
-                {!isEmpty(comment) &&
-                  comment.map((commentById) => {
-                    if (comment.id === post.id)
-                      return commentById.content.length;
-                  })}
+                <img
+                  onClick={() => setShowComments(!showComments)}
+                  src="./img/icons/message1.svg"
+                  alt="comment"
+                />
+
+                {/* <span>
+                  {comment.rows[0].post_id === post.id
+                    ? comment.rows.length
+                    : 0}
+                </span> */}
               </div>
             </div>
+            {showComments && <CardComments post={post} />}
           </div>
         </>
       )}
@@ -122,11 +125,3 @@ const Card = ({ post }) => {
 };
 
 export default Card;
-
-// {
-//   !isEmpty(usersData[0]) &&
-//     usersData.map((user) => {
-//       if (user.id === post.users_id)
-//         return user.first_name + " " + user.last_name;
-//     });
-// }

@@ -6,7 +6,7 @@ const getUserById =
 const getUserByEmail = "SELECT * FROM users WHERE email = $1";
 const checkEmailExists = "SELECT s FROM users s WHERE s.email = $1";
 const addUser =
-  "INSERT INTO users first_name, last_name, email, dob, password VALUES $1, $2, $3, $4, $5 RETURNING *";
+  "INSERT INTO users (first_name, last_name, email, dob, password) VALUES ($1, $2, $3, $4, $5)";
 const updateUser =
   "UPDATE users SET first_name = $1, last_name = $2, dob = $3, image = $4 WHERE id = $5";
 const deleteUser = "DELETE FROM users WHERE id = $1";
@@ -14,7 +14,8 @@ const updateImage = "UPDATE users SET image = $1 WHERE id = $2;";
 
 //************************POST**************************** */
 const getAllPost = "SELECT * FROM posts ORDER BY id desc";
-const createPost = "INSERT INTO posts users_id, content VALUES $1, $2;";
+const createPost =
+  "INSERT INTO posts (users_id, content, image, video) VALUES ($1, $2, $3, $4);";
 const createPostImage =
   "INSERT INTO posts (users_id, content, image) VALUES ($1, $2, $3);";
 const getPostById = "SELECT id FROM posts WHERE id = $1;";
