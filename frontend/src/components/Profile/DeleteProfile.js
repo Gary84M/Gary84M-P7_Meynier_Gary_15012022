@@ -13,7 +13,6 @@ const DeleteProfile = () => {
       <div className="right-part">
         <h3>Pour supprimer votre compte, c'est ici</h3>
         <button
-          variant="danger"
           onClick={() => {
             if (window.confirm("Voulez-vous supprimer votre profil?")) {
               handleDelete();

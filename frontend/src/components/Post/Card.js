@@ -11,13 +11,11 @@ const Card = ({ post }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdated, setIsUpdated] = useState(false);
   const [textUpdate, setTextUpdate] = useState(null);
+  const [isAuthor, setIsAuthor] = useState(false);
   const [showComments, setShowComments] = useState(false);
 
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
-  //const comment = useSelector((state) => state.commentReducer);
-  //console.log(comment.rows[0].post_id);
-
   const dispatch = useDispatch();
 
   const updateItem = () => {
@@ -28,9 +26,19 @@ const Card = ({ post }) => {
   };
 
   useEffect(() => {
+    const checkAuthor = () => {
+      if (userData.id === post.users_id || userData.is_admin === true) {
+        setIsAuthor(true);
+      }
+    };
+    checkAuthor();
+  }, []);
+
+  useEffect(() => {
     !isEmpty(usersData[0]) && setIsLoading(false);
   }, [usersData]);
-  console.log("Où es-tu??");
+
+  console.log(userData.is_admin);
 
   return (
     <li className="card-container" key={post.id}>
@@ -93,7 +101,7 @@ const Card = ({ post }) => {
                 title={post.id}></iframe>
             )}
 
-            {userData.id === post.users_id && (
+            {isAuthor && (
               <div className="button-container">
                 <div onClick={() => setIsUpdated(!isUpdated)}>
                   <img src="./img/icons/edit.svg" alt="edit" />

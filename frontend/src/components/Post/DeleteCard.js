@@ -5,6 +5,7 @@ import { deletePost } from "../../actions/post.actions";
 const DeleteCard = (post) => {
   const dispatch = useDispatch();
   const deleteQuote = () => dispatch(deletePost(post.id));
+
   return (
     <div
       onClick={() => {

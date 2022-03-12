@@ -1,8 +1,7 @@
 //*************************USERS******************** */
 const getUsers =
   "SELECT id, first_name, last_name, email, image, dob FROM users;";
-const getUserById =
-  "SELECT id, first_name, last_name, email, dob, image FROM users WHERE id = $1";
+const getUserById = "SELECT * FROM users WHERE id = $1";
 const getUserByEmail = "SELECT * FROM users WHERE email = $1";
 const checkEmailExists = "SELECT s FROM users s WHERE s.email = $1";
 const addUser =

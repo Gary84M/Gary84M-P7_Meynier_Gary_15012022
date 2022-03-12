@@ -3,11 +3,14 @@ import { UidContext } from "../AppContext";
 import commentReducer from "../../reducers/comment.reducer";
 import { useDispatch } from "react-redux";
 import { deleteComment, editComment } from "../../actions/comment.actions";
+import userReducer from "../../reducers/user.reducer";
+import { useSelector } from "react-redux";
 
 const DeleteComment = ({ comment, postId }) => {
   const [isAuthor, setIsAuthor] = useState(false);
   const [edit, setEdit] = useState(false);
-  //const [text, setText] = useState("");
+
+  const userData = useSelector((state) => state.userReducer);
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
 
@@ -23,10 +26,11 @@ const DeleteComment = ({ comment, postId }) => {
 
   useEffect(() => {
     const checkAuthor = () => {
-      if (uid == comment.users_id) setIsAuthor(true);
+      if (uid == comment.users_id || userData.is_admin === true)
+        setIsAuthor(true);
     };
     checkAuthor();
-  }, [uid, comment.users_id]);
+  }, []);
 
   return (
     <div className="edit-comment">
