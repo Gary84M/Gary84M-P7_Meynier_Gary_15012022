@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { updatePost } from "../../actions/post.actions";
 import DeleteCard from "./DeleteCard";
 import CardComments from "./CardComments";
+import { getComments } from "../../actions/comment.actions";
 
 const Card = ({ post }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,16 +14,15 @@ const Card = ({ post }) => {
   const [textUpdate, setTextUpdate] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [postId, setPostId] = useState(null);
 
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
-  //const postsData = useSelector((state) => state.postReducer);
+  const commentsData = useSelector((state) => state.commentReducer);
 
-  //const postId = post.id;
-  console.log(postId);
   const dispatch = useDispatch();
-  //
+
+  const postId = post.id;
+  localStorage.setItem("postId", JSON.parse(postId));
 
   const updateItem = () => {
     if (textUpdate) {
@@ -123,6 +123,7 @@ const Card = ({ post }) => {
                   onClick={() => setShowComments(!showComments)}
                   src="./img/icons/message1.svg"
                   alt="comment"
+                  id={postId}
                 />
 
                 {/* <span>

@@ -131,13 +131,13 @@ const deleteCommentPost = (req, res) => {
 };
 
 const readComms = (req, res) => {
-  const postId = req.body.postId;
+  const postId = req.params.postId;
 
-  pool.query(queries.getCommByPost, (error, results) => {
+  pool.query(queries.getCommByPost, [postId], (error, results) => {
     if (error) throw error;
     res.status(200).json(results);
 
-    console.log(res);
+    console.log(postId);
     console.log("getting posts sorted by id");
   });
 };

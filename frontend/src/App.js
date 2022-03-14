@@ -4,10 +4,14 @@ import { UidContext } from "./components/AppContext";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { getUser } from "./actions/user.actions";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();
+
+  const posts = useSelector((state) => state.postReducer);
+  console.log(posts);
 
   useEffect(() => {
     const fetchToken = () => {

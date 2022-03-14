@@ -10,7 +10,9 @@ const CardComments = ({ post }) => {
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
   const comment = useSelector((state) => state.commentReducer.rows);
+  //const posts = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
+  //console.log(posts[0].id);
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -58,7 +60,7 @@ const CardComments = ({ post }) => {
             <div className="right-part">
               <div className="comment-header">
                 <div className="pseudo">
-                  <h3>{comment?.usersData?.first_name}</h3>
+                  <h3>{usersData?.[comment?.users_id]?.first_name}</h3>
                 </div>
               </div>
               <p>{comment.content}</p>

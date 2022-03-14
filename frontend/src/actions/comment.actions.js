@@ -1,24 +1,20 @@
 import axios from "axios";
-
-//comments
+import { useSelector } from "react-redux";
 
 export const GET_COMMENTS = "GET_COMMENTS";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 
-export const getComments = (req, res, postId) => {
-  console.log(req);
-  console.log(res);
-  console.log(postId);
-
+export const getComments = (postId) => {
   return (dispatch) => {
     return axios({
       method: "get",
-      url: `${process.env.REACT_APP_API_URL}api/post/all-comments`,
+      url: `${process.env.REACT_APP_API_URL}api/post/all-comments/${postId}`,
       data: { postId },
     })
       .then((res) => {
         dispatch({ type: GET_COMMENTS, payload: res.data });
+        console.log(res.data);
       })
       .catch((error) => console.log(error));
   };
