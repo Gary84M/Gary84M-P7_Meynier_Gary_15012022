@@ -131,19 +131,15 @@ const deleteCommentPost = (req, res) => {
 };
 
 const readComms = (req, res) => {
-  //const cPostId = parseInt(req.params.id);
+  const postId = req.body.postId;
 
-  pool.query(
-    // "SELECT p.id, count(c.id) AS total_comments FROM comments c, posts p WHERE c.post_id = p.id GROUP BY p.id;",
-    "SELECT p.id, c.* AS total_comments FROM comments c, posts p WHERE c.post_id = p.id;",
-    // [postid],
-    (error, results) => {
-      if (error) throw error;
-      res.status(200).json(results);
-      console.log(res.results);
-      console.log("getting posts sorted by id");
-    }
-  );
+  pool.query(queries.getCommByPost, (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results);
+
+    console.log(res);
+    console.log("getting posts sorted by id");
+  });
 };
 
 module.exports = {

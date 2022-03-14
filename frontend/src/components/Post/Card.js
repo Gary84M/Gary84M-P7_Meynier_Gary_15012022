@@ -13,10 +13,16 @@ const Card = ({ post }) => {
   const [textUpdate, setTextUpdate] = useState(null);
   const [isAuthor, setIsAuthor] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [postId, setPostId] = useState(null);
 
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
+  //const postsData = useSelector((state) => state.postReducer);
+
+  //const postId = post.id;
+  console.log(postId);
   const dispatch = useDispatch();
+  //
 
   const updateItem = () => {
     if (textUpdate) {
@@ -38,8 +44,6 @@ const Card = ({ post }) => {
     !isEmpty(usersData[0]) && setIsLoading(false);
   }, [usersData]);
 
-  console.log(userData.is_admin);
-
   return (
     <li className="card-container" key={post.id}>
       {isLoading ? (
@@ -52,6 +56,10 @@ const Card = ({ post }) => {
                 !isEmpty(usersData[0]) &&
                 usersData
                   .map((user) => {
+                    let imgName =
+                      "file:///Users/garymeynier/CODE/OC-P/P7/P7_Meynier_Gary_15012022/backend/public/upload/profile/" +
+                      user.image;
+
                     if (user.id === post.users_id) return user.image;
                     else return null;
                   })

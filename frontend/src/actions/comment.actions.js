@@ -3,19 +3,21 @@ import axios from "axios";
 //comments
 
 export const GET_COMMENTS = "GET_COMMENTS";
-
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 
-export const getComments = (num) => {
+export const getComments = (req, res, postId) => {
+  console.log(req);
+  console.log(res);
+  console.log(postId);
+
   return (dispatch) => {
     return axios({
       method: "get",
-      url: `${process.env.REACT_APP_API_URL}api/post/all-comments/`,
-      //data: { commentPostId },
+      url: `${process.env.REACT_APP_API_URL}api/post/all-comments`,
+      data: { postId },
     })
       .then((res) => {
-        //const array = res.data.slice(0, num);
         dispatch({ type: GET_COMMENTS, payload: res.data });
       })
       .catch((error) => console.log(error));

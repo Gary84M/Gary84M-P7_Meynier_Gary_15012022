@@ -25,6 +25,12 @@ const addComm =
   "INSERT INTO comments (post_id, users_id, content) VALUES ($1, $2, $3);";
 
 const getCommById = "SELECT id, users_id, content FROM comments WHERE id = $1;";
+const getCommByPost =
+  "SELECT p.id, c.content, c.users_id FROM comments c, posts p WHERE c.post_id = p.id AND c.post_id = 44 ORDER BY c.id DESC;";
+// const getCommByPost =
+//   "SELECT comments.content, comments.users_id FROM comments JOIN posts ON comments.post_id = posts.id WHERE post_id = 44 ORDER BY comments.id desc;";
+// const getCommByPost =
+//   "SELECT comments.content, comments.users_id FROM comments JOIN posts ON comments.post_id = posts.id ORDER BY comments.id desc;";
 const updateComm = "UPDATE comments SET content = $1 WHERE id = $2;";
 const deleteComm = "DELETE FROM comments WHERE id = $1;";
 const getAllComms = "SELECT * FROM comments ORDER BY id desc";
@@ -48,6 +54,7 @@ module.exports = {
 
   addComm,
   getCommById,
+  getCommByPost,
   updateComm,
   deleteComm,
   getAllComms,

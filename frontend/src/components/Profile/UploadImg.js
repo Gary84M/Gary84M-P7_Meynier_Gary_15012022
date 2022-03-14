@@ -9,20 +9,21 @@ const UploadImg = () => {
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userReducer);
+  const fileSend = document.getElementById("file")?.files[0];
 
-  const handlePicture = (e) => {
+  function handlePicture(e) {
     e.preventDefault();
     const data = new FormData();
     //data.append("name", "TEST");
     data.append("id", userData.id);
-    data.append("file", file);
+    data.append("file", fileSend);
 
     console.log(JSON.stringify(Object.fromEntries(data)));
     dispatch(uploadPicture(data, userData.id));
-  };
+  }
 
   return (
-    <form action="" onSubmit={handlePicture} className="upload-pic">
+    <form action="" className="upload-pic">
       <label htmlFor="file">Changer l'image</label>
       <input
         type="file"
@@ -32,7 +33,7 @@ const UploadImg = () => {
         onChange={(e) => setFile(e.target.files)}
       />
       <br />
-      <input type="submit" value="Envoyer" />
+      <input type="submit" value="Envoyer" onClick={handlePicture} />
     </form>
   );
 };

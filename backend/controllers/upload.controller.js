@@ -4,12 +4,9 @@ const jwt = require("jsonwebtoken");
 // const jwtTokens = require("../utils/jwt.helpers");
 const multer = require("../middleware/multer-config");
 const jwtTokens = require("../utils/jwt.helpers");
+const fs = require("fs");
 
 const uploadProfile = (req, res) => {
-  //   res.status(200).json({ message: "Single file uploaded" });
-  console.log(req);
-  req.body.image = JSON.parse(req.body);
-
   const authHeader = req.headers["authorization"]; //Bearer TOKEN
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -17,56 +14,47 @@ const uploadProfile = (req, res) => {
   const id = decodedToken.user_id;
 
   const url = req.protocol + "://" + req.get("host");
-  const image = new Image({
-    name: req.body.originalname,
-    imageUrl: url + "/backend/public/upload/profile/" + req.file.filename,
-  });
-  image
-    .save()
-    .then(() => {
-      res.status(201).json({
-        message: "Post saved successfully!",
-      });
+
+  //const userImage;
+
+  pool
+    .query("SELECT image FROM users WHERE id = $1 ;", [id])
+    .then((data) => {
+      const userImage = data.rows[0].image;
+      console.log(req);
+      //console.log(...req.body.file);
+      if (!userImage || userImage == "") {
+        const imageUrl = url + "/public/upload/profile/" + req.file.filename;
+
+        pool.query(queries.updateImage, [imageUrl, id], (error, results) => {
+          if (error) {
+            return res.status(400).json({ error: error });
+          }
+          return res
+            .status(201)
+            .json({ message: "profile picture succesfully uploaded" });
+        });
+      } else {
+        const imageName = userImage.split("/public/upload/profile/")[1];
+        //const name = req.body.originalname;
+        const imageUrl = url + "/public/upload/profile/" + req.file.filename;
+
+        fs.unlink(`public/upload/profile/${imageName}`, () => {
+          pool.query(queries.updateImage, [imageUrl, id], (error, results) => {
+            if (error) {
+              return res.status(400).json({
+                error: error,
+              });
+            }
+            return res.status(201).json({
+              message: "profile picture succesfully uploaded",
+            });
+          });
+        });
+      }
     })
-    .then(
-      pool.query(queries.updateImage, [imageurl, id], (error, results) => {
-        if (error) throw error;
-      })
-    );
-  return res
-    .status(201)
-    .send({ message: "profile picture succesfully uploaded " })
-
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+    .catch((error) => console.log(error));
 };
-
-// exports.createThing = (req, res, next) => {
-//   req.body.thing = JSON.parse(req.body.thing);
-//   const url = req.protocol + "://" + req.get("host");
-//   const thing = new Thing({
-//     title: req.body.thing.title,
-//     description: req.body.thing.description,
-//     imageUrl: url + "/images/" + req.file.filename,
-//     price: req.body.thing.price,
-//     userId: req.body.thing.userId,
-//   });
-//   thing
-//     .save()
-//     .then(() => {
-//       res.status(201).json({
-//         message: "Post saved successfully!",
-//       });
-//     })
-//     .catch((error) => {
-//       res.status(400).json({
-//         error: error,
-//       });
-//     });
-// };
 
 const uploadImagePost = async (req, res) => {
   const authHeader = req.headers["authorization"]; //Bearer TOKEN

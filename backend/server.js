@@ -15,20 +15,24 @@ const authenticateToken = require("./middleware/authorization");
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: "*",
   credentials: true,
-  allowHeaders: ["sessionId", "Content-Type"],
-  exposeHeaders: ["sessionId"],
-  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-  preflightContinue: false,
+  optionSuccessStatus: 200,
 };
-const corsConfig = {
-  credentials: true,
-  origin: true,
-};
-app.use(cors(corsConfig));
+app.use(cors(corsOptions));
 
-//app.use(cors({ corsOptions }));
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   next();
+// });
 
 app.use(cookieParser());
 // app.get("/", function (req, res) {
@@ -52,7 +56,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/post", postRoutes);
 
 app.use(
-  "/api/users/",
+  "/public/upload/profile",
   express.static(path.join(__dirname, "public/upload/profile"))
 );
 

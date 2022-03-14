@@ -19,7 +19,7 @@ router.post(
 );
 
 //TABLE comments
-router.get("/all-comments/", postController.readComms);
+router.get("/all-comments", postController.readComms);
 router.post("/comment-post/:id", postController.commentPost);
 router.patch("/edit-comment-post/:id", postController.editCommentPost);
 router.delete("/delete-comment-post/:id", postController.deleteCommentPost);
