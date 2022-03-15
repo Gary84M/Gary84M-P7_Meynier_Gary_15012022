@@ -10,8 +10,8 @@ const App = () => {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();
 
-  const posts = useSelector((state) => state.postReducer);
-  console.log(posts);
+  const postsData = useSelector((state) => state.postReducer);
+  //console.log(postsData);
 
   useEffect(() => {
     const fetchToken = () => {

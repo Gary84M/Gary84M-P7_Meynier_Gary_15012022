@@ -9,10 +9,9 @@ const CardComments = ({ post }) => {
   const [text, setText] = useState("");
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
-  const comment = useSelector((state) => state.commentReducer.rows);
-  //const posts = useSelector((state) => state.postReducer);
+  const comments = useSelector((state) => state.commentReducer.rows);
+  const posts = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
-  //console.log(posts[0].id);
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -31,10 +30,45 @@ const CardComments = ({ post }) => {
         .then(() => setText(""));
     }
   };
+  var comm = [];
+  const commentPostId =
+    comments &&
+    comments.filter((el) => {
+      const a = parseInt(el.post_id);
+
+      if (el.post_id == post.id) {
+        comm.push(el);
+      }
+    });
+
+  console.table(comm);
+
+  const postId = posts.map((el) => {
+    const postId = parseInt(el.id);
+
+    return postId;
+  });
+
+  const commentContent =
+    comments &&
+    comments.map((el) => {
+      const commentContent = el.content;
+      return commentContent;
+    });
+
+  const mapComments = () => {
+    //console.log(commentPostId + post.id);
+    comments.map((comment) => {
+      if (post.id === commentPostId) {
+        return comment.content;
+      }
+    });
+  };
+  console.log(commentPostId);
 
   return (
     <div className="comments-container">
-      {comment.map((comment) => {
+      {comm?.map((comment) => {
         return (
           <div
             className={
@@ -60,15 +94,18 @@ const CardComments = ({ post }) => {
             <div className="right-part">
               <div className="comment-header">
                 <div className="pseudo">
-                  <h3>{usersData?.[comment?.users_id]?.first_name}</h3>
+                  <h3>{usersData[comment.users_id]?.first_name}</h3>
+                  {/* comment.user.first_name */}
+                  {/* Include userData into the comment */}
                 </div>
               </div>
-              <p>{comment.content}</p>
+              <p>{comment.content}</p>;
               <DeleteComment comment={comment} postId={post.id} />
             </div>
           </div>
         );
       })}
+
       {userData.id && (
         <form action="" onSubmit={handleComment} className="comment-form">
           <input

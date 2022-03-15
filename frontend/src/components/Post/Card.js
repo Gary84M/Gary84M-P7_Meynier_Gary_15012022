@@ -22,7 +22,7 @@ const Card = ({ post }) => {
   const dispatch = useDispatch();
 
   const postId = post.id;
-  localStorage.setItem("postId", JSON.parse(postId));
+  // localStorage.setItem("postId", JSON.parse(postId));
 
   const updateItem = () => {
     if (textUpdate) {
