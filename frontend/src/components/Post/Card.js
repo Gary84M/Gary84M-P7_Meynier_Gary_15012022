@@ -31,6 +31,11 @@ const Card = ({ post }) => {
     setIsUpdated(false);
   };
 
+  console.log(userData.id);
+  console.log(post.users_id);
+  console.log(post);
+  console.log(userData.is_admin);
+
   useEffect(() => {
     const checkAuthor = () => {
       if (userData.id === post.users_id || userData.is_admin === true) {
@@ -38,7 +43,7 @@ const Card = ({ post }) => {
       }
     };
     checkAuthor();
-  }, []);
+  }, [userData, post]);
 
   useEffect(() => {
     !isEmpty(usersData[0]) && setIsLoading(false);
@@ -79,7 +84,6 @@ const Card = ({ post }) => {
                     })}
                 </h3>
               </div>
-              {/* <span></span> */}
             </div>
             {isUpdated === false && <p>{post.content}</p>}
             {isUpdated && (
@@ -124,10 +128,6 @@ const Card = ({ post }) => {
                   alt="comment"
                   id={postId}
                 />
-
-                {/* <span>
-                  {comment.content.rows ? comment.content.rows.length : 0}
-                </span> */}
               </div>
             </div>
             {showComments && <CardComments post={post} />}

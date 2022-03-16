@@ -15,6 +15,9 @@ const updateImage = "UPDATE users SET image = $1 WHERE id = $2;";
 const getAllPost = "SELECT * FROM posts ORDER BY id desc";
 const createPost =
   "INSERT INTO posts (users_id, content, image, video) VALUES ($1, $2, $3, $4);";
+const createPostNoPic =
+  "INSERT INTO posts (users_id, content, video) VALUES ($1, $2, $3);";
+
 const createPostImage =
   "INSERT INTO posts (users_id, content, image) VALUES ($1, $2, $3);";
 const getPostById = "SELECT id FROM posts WHERE id = $1;";
@@ -48,6 +51,7 @@ module.exports = {
 
   getAllPost,
   createPost,
+  createPostNoPic,
   createPostImage,
   getPostById,
   updatePost,

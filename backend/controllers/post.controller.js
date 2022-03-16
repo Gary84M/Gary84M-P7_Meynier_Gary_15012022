@@ -12,18 +12,30 @@ const readPost = (req, res) => {
 
 const createPost = async (req, res) => {
   const url = req.protocol + "://" + req.get("host");
-  const imageUrl = url + "/public/upload/profile/" + req.file.filename;
+  const imageUrl = url + "/public/upload/profile/" + req.file?.filename;
   const { users_id, content, image, video } = req.body;
 
   try {
-    pool.query(
-      queries.createPost,
-      [users_id, content, imageUrl, video],
-      (error, results) => {
-        if (error) throw error;
-        res.status(201).send("Post succesfully created");
-      }
-    );
+    if (!req.file) {
+      pool.query(
+        queries.createPostNoPic,
+        [users_id, content, video],
+        (error, results) => {
+          if (error) throw error;
+          res.status(201).send("Post succesfully created");
+        }
+      );
+    } else {
+      pool.query(
+        queries.createPost,
+        [users_id, content, imageUrl, video],
+        (error, results) => {
+          if (error) throw error;
+          res.status(201).send("Post succesfully created");
+        }
+      );
+    }
+    console.log(req.file);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
