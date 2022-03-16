@@ -36,7 +36,6 @@ const uploadProfile = (req, res) => {
         });
       } else {
         const imageName = userImage.split("/public/upload/profile/")[1];
-        //const name = req.body.originalname;
         const imageUrl = url + "/public/upload/profile/" + req.file.filename;
 
         fs.unlink(`public/upload/profile/${imageName}`, () => {

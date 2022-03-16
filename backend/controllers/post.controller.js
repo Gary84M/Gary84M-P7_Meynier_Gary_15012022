@@ -11,13 +11,14 @@ const readPost = (req, res) => {
 };
 
 const createPost = async (req, res) => {
+  const url = req.protocol + "://" + req.get("host");
+  const imageUrl = url + "/public/upload/profile/" + req.file.filename;
   const { users_id, content, image, video } = req.body;
-  console.log("ICI");
-  console.log(req.body);
+
   try {
     pool.query(
       queries.createPost,
-      [users_id, content, image, video],
+      [users_id, content, imageUrl, video],
       (error, results) => {
         if (error) throw error;
         res.status(201).send("Post succesfully created");
