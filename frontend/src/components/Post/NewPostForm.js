@@ -25,7 +25,6 @@ const NewPostForm = () => {
       data.append("video", video);
 
       console.log(JSON.stringify(Object.fromEntries(data)));
-      console.log(userData?.id);
 
       await dispatch(addPost(data));
       dispatch(getPosts());

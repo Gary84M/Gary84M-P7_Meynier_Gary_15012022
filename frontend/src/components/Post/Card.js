@@ -79,7 +79,7 @@ const Card = ({ post }) => {
                     })}
                 </h3>
               </div>
-              <span></span>
+              {/* <span></span> */}
             </div>
             {isUpdated === false && <p>{post.content}</p>}
             {isUpdated && (
@@ -102,11 +102,10 @@ const Card = ({ post }) => {
               <iframe
                 width="500"
                 height="300"
-                src={post.content}
+                src={post.video}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={post.id}></iframe>
+                allowFullScreen></iframe>
             )}
 
             {isAuthor && (
@@ -127,9 +126,7 @@ const Card = ({ post }) => {
                 />
 
                 {/* <span>
-                  {comment.rows[0].post_id === post.id
-                    ? comment.rows.length
-                    : 0}
+                  {comment.content.rows ? comment.content.rows.length : 0}
                 </span> */}
               </div>
             </div>

@@ -94,9 +94,7 @@ const CardComments = ({ post }) => {
             <div className="right-part">
               <div className="comment-header">
                 <div className="pseudo">
-                  <h3>{usersData[comment.users_id]?.first_name}</h3>
-                  {/* comment.user.first_name */}
-                  {/* Include userData into the comment */}
+                  <h3>{comment.first_name + " " + comment.last_name}</h3>
                 </div>
               </div>
               <p>{comment.content}</p>;

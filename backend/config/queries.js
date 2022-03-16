@@ -27,7 +27,7 @@ const addComm =
 const getCommById = "SELECT id, users_id, content FROM comments WHERE id = $1;";
 
 const getCommByPost =
-  "SELECT p.id, c.content, c.users_id, c.id, c.post_id FROM comments c, posts p WHERE c.post_id = p.id ORDER BY c.id DESC;";
+  "SELECT p.id, c.content, c.users_id, c.id, c.post_id, u.first_name, u.last_name FROM comments c, posts p, users u WHERE c.post_id = p.id AND c.users_id = u.id ORDER BY c.id DESC;";
 // const getCommByPost =
 //   "SELECT comments.content, comments.users_id FROM comments JOIN posts ON comments.post_id = posts.id WHERE post_id = 44 ORDER BY comments.id desc;";
 // const getCommByPost =

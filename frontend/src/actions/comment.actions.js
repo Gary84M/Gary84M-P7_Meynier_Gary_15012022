@@ -14,7 +14,6 @@ export const getComments = (postsId) => {
     })
       .then((res) => {
         dispatch({ type: GET_COMMENTS, payload: res.data });
-        console.log(res.data);
       })
       .catch((error) => console.log(error));
   };
