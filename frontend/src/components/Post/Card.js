@@ -31,10 +31,7 @@ const Card = ({ post }) => {
     setIsUpdated(false);
   };
 
-  console.log(userData.id);
-  console.log(post.users_id);
-  console.log(post);
-  console.log(userData.is_admin);
+ 
 
   useEffect(() => {
     const checkAuthor = () => {

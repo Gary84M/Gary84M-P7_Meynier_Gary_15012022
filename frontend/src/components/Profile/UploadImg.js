@@ -29,7 +29,7 @@ const UploadImg = () => {
         type="file"
         id="file"
         name="file"
-        accept=",jpg, .jpeg, .png"
+        accept=".jpg, .jpeg, .png"
         onChange={(e) => setFile(e.target.files)}
       />
       <br />

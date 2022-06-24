@@ -7,10 +7,10 @@ export default function commentReducer(state = initialState, action) {
   switch (action.type) {
     case GET_COMMENTS:
       return action.payload;
-    //TODO
+
     case DELETE_COMMENT:
       return {
-        comments: state.comments.filter(
+        comments: state.comments?.filter(
           (comment) => comment.id !== action.payload.commentId
         ),
       };

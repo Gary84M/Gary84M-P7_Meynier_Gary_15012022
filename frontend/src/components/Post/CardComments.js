@@ -41,8 +41,6 @@ const CardComments = ({ post }) => {
       }
     });
 
-  console.table(comm);
-
   const postId = posts.map((el) => {
     const postId = parseInt(el.id);
 
@@ -57,14 +55,12 @@ const CardComments = ({ post }) => {
     });
 
   const mapComments = () => {
-    //console.log(commentPostId + post.id);
     comments.map((comment) => {
       if (post.id === commentPostId) {
         return comment.content;
       }
     });
   };
-  console.log(commentPostId);
 
   return (
     <div className="comments-container">
@@ -97,7 +93,7 @@ const CardComments = ({ post }) => {
                   <h3>{comment.first_name + " " + comment.last_name}</h3>
                 </div>
               </div>
-              <p>{comment.content}</p>;
+              <p>{comment.content}</p>
               <DeleteComment comment={comment} postId={post.id} />
             </div>
           </div>
